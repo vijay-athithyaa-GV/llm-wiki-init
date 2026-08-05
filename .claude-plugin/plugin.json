@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "llm-wiki-init",
+  "displayName": "LLM Wiki Init",
+  "version": "1.0.0",
+  "description": "Provides the /wiki-init and /wiki-status commands for scaffolding and inspecting a persistent, LLM-maintained knowledge base on any topic.",
+  "author": {
+    "name": "Vijay Athithyaa G V",
+    "url": "https://github.com/vijay-athithyaa-GV"
+  },
+  "homepage": "https://github.com/vijay-athithyaa-GV/llm-wiki-init",
+  "repository": "https://github.com/vijay-athithyaa-GV/llm-wiki-init",
+  "license": "MIT",
+  "keywords": [
+    "wiki",
+    "knowledge-base",
+    "notes",
+    "markdown",
+    "scaffolding",
+    "research"
+  ],
+  "commands": [
+    "./commands/wiki-init.md",
+    "./commands/wiki-status.md"
+  ]
+}

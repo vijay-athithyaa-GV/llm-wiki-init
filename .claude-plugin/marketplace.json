@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "llm-wiki-init",
+  "description": "Single-plugin marketplace hosting llm-wiki-init.",
+  "owner": {
+    "name": "Vijay Athithyaa G V",
+    "url": "https://github.com/vijay-athithyaa-GV"
+  },
+  "plugins": [
+    {
+      "name": "llm-wiki-init",
+      "source": "./",
+      "description": "Provides the /wiki-init and /wiki-status commands for scaffolding and inspecting a persistent, LLM-maintained knowledge base on any topic.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "tags": [
+        "wiki",
+        "knowledge-base",
+        "markdown",
+        "research"
+      ],
+      "license": "MIT",
+      "homepage": "https://github.com/vijay-athithyaa-GV/llm-wiki-init"
+    }
+  ]
+}
