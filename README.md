@@ -18,9 +18,16 @@ Two different names, easy to mix up:
 | | Name | What it is |
 |---|---|---|
 | **The plugin** | `llm-wiki-init` | The installable package. You install this once. |
-| **The commands** | `/wiki-init`, `/wiki-status` | What you type in Claude Code. Provided by the plugin. |
+| **The commands** | `/llm-wiki-init:wiki-init`, `/llm-wiki-init:wiki-status` | What you type in Claude Code. Provided by the plugin. |
 
-You install `llm-wiki-init`. You then run `/wiki-init`.
+You install `llm-wiki-init`. You then run `/llm-wiki-init:wiki-init`.
+
+**Commands must include the plugin namespace.** Claude Code registers every
+plugin command as `/<plugin-name>:<command-name>`, so the bare `/wiki-init` will
+come back as `Unknown command`. The prefix is what keeps plugins from colliding —
+any number of installed plugins can ship a command called `wiki-init`, and the
+namespace is what tells them apart. Typing `/llm-wiki-init:` in the TUI will
+autocomplete the rest.
 
 ## Install
 
@@ -37,7 +44,7 @@ the plugin from it.
 Create a wiki — pass a folder name and whatever topic you want it to cover:
 
 ```
-/wiki-init my-wiki "topic of your choice"
+/llm-wiki-init:wiki-init my-wiki "topic of your choice"
 ```
 
 The topic is entirely up to you. Nothing in this plugin assumes a domain.
@@ -54,7 +61,7 @@ Ask it to `lint the wiki` for a health check.
 Check on an existing wiki at any time:
 
 ```
-/wiki-status
+/llm-wiki-init:wiki-status
 ```
 
 Read-only. Reports page counts per category, the last 5 log entries, and any
@@ -65,24 +72,24 @@ orphan pages that aren't linked from the index. It changes nothing.
 A full session, start to finish:
 
 ```
-/wiki-init my-notes "distributed systems"
+/llm-wiki-init:wiki-init my-notes "distributed systems"
 ingest this: https://example.com/some-article-on-raft
 what do I know about leader election?
-/wiki-status
+/llm-wiki-init:wiki-status
 ```
 
 Lines 1 and 4 are slash commands; lines 2 and 3 are just things you say. That mix
 is the point — the plugin scaffolds the folder, and from then on the generated
 `CLAUDE.md` is what makes Claude treat it as a wiki.
 
-One caveat: after `/wiki-init` creates `my-notes/`, start your session **inside**
-that folder (`cd my-notes` and run `claude`) so its `CLAUDE.md` loads. Run the
-ingest from the parent directory and you'll get generic behavior instead of wiki
-behavior.
+One caveat: after `/llm-wiki-init:wiki-init` creates `my-notes/`, start your
+session **inside** that folder (`cd my-notes` and run `claude`) so its
+`CLAUDE.md` loads. Run the ingest from the parent directory and you'll get
+generic behavior instead of wiki behavior.
 
 ## What you get
 
-`/wiki-init my-wiki "topic of your choice"` produces:
+`/llm-wiki-init:wiki-init my-wiki "topic of your choice"` produces:
 
 ```text
 my-wiki/
@@ -103,8 +110,8 @@ any future Claude Code session opened here reads it and knows the rules — raw
 sources are immutable, every page gets indexed, contradictions get flagged rather
 than quietly overwritten, and gaps get reported instead of filled with guesses.
 
-Re-running `/wiki-init` against a folder that already has a `CLAUDE.md` is
-refused. It will never overwrite an existing wiki.
+Re-running `/llm-wiki-init:wiki-init` against a folder that already has a
+`CLAUDE.md` is refused. It will never overwrite an existing wiki.
 
 ## Why a wiki instead of RAG
 
