@@ -7,6 +7,10 @@ Built on the **LLM Wiki** pattern described by Andrej Karpathy in
 [this gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
 The pattern is his; this is a Claude Code plugin that sets it up for you.
 
+**Requirements:** Claude Code v2.1.143 or later (check with `claude --version`).
+No other dependencies — no Node, no clone, no shell. If you don't see the
+`/plugin` command, update Claude Code.
+
 ## Plugin vs. command
 
 Two different names, easy to mix up:
@@ -55,6 +59,26 @@ Check on an existing wiki at any time:
 
 Read-only. Reports page counts per category, the last 5 log entries, and any
 orphan pages that aren't linked from the index. It changes nothing.
+
+## Quick example
+
+A full session, start to finish:
+
+```
+/wiki-init my-notes "distributed systems"
+ingest this: https://example.com/some-article-on-raft
+what do I know about leader election?
+/wiki-status
+```
+
+Lines 1 and 4 are slash commands; lines 2 and 3 are just things you say. That mix
+is the point — the plugin scaffolds the folder, and from then on the generated
+`CLAUDE.md` is what makes Claude treat it as a wiki.
+
+One caveat: after `/wiki-init` creates `my-notes/`, start your session **inside**
+that folder (`cd my-notes` and run `claude`) so its `CLAUDE.md` loads. Run the
+ingest from the parent directory and you'll get generic behavior instead of wiki
+behavior.
 
 ## What you get
 
