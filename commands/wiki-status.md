@@ -1,7 +1,7 @@
 ---
 description: Report the health of an existing LLM Wiki — page counts, recent activity, and orphan pages
 argument-hint: [wiki-folder]
-allowed-tools: Read, Glob, Grep, Bash(ls:*)
+allowed-tools: Read, Glob, Grep
 ---
 
 # /wiki-status

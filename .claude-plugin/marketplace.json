@@ -11,7 +11,7 @@
       "name": "llm-wiki-init",
       "source": "./",
       "description": "Provides the /wiki-init and /wiki-status commands for scaffolding and inspecting a persistent, LLM-maintained knowledge base on any topic.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": "productivity",
       "tags": [
         "wiki",

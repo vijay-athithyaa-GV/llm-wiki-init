@@ -1,7 +1,7 @@
 ---
 description: Scaffold a new LLM Wiki — a persistent, interlinked markdown knowledge base on any topic
 argument-hint: <folder-name> "<topic description>"
-allowed-tools: Read, Write, Glob, Bash(mkdir:*), Bash(ls:*)
+allowed-tools: Read, Write, Glob
 ---
 
 # /wiki-init
@@ -52,8 +52,12 @@ Only once Step 1 has confirmed `<FOLDER>/CLAUDE.md` does **not** exist:
 <FOLDER>/wiki/sources/
 ```
 
-Write an empty `.gitkeep` file into each of these four directories so they
-survive a git commit while still empty.
+Create these by writing an empty `.gitkeep` file into each — `Write` creates any
+missing parent directories on its own, so no shell is needed. The `.gitkeep`
+files also let the empty directories survive a git commit.
+
+Do not shell out to `mkdir`; this command must work identically on Windows,
+macOS, and Linux, including in environments with no shell available.
 
 ## Step 3 — Write `<FOLDER>/CLAUDE.md`
 
