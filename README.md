@@ -3,6 +3,8 @@
 Scaffold a persistent, self-maintaining markdown knowledge base on any topic —
 with one command.
 
+![Demo](assets/demo.gif)
+
 Built on the **LLM Wiki** pattern described by Andrej Karpathy in
 [this gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
 The pattern is his; this is a Claude Code plugin that sets it up for you.
