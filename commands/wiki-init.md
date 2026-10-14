@@ -4,7 +4,7 @@ argument-hint: <folder-name> "<topic description>"
 allowed-tools: Read, Write, Glob
 ---
 
-# /wiki-init
+# /llm-wiki-init:wiki-init
 
 Scaffold a new LLM Wiki in a fresh folder.
 
@@ -13,7 +13,7 @@ Arguments:
 - `$1` — the target folder name
 - `$2` — a short description of the topic this wiki will cover
 
-## Step 0 — Resolve arguments
+## Step 0 — Resolve and validate arguments
 
 If `$1` is missing, ask: **"What should the wiki folder be called?"**
 
@@ -27,23 +27,49 @@ else. Wait for the user's answer before continuing.
 Throughout the rest of this command, `<FOLDER>` means the value of `$1` and
 `<TOPIC>` means the value of `$2`.
 
-## Step 1 — Refuse to overwrite an existing wiki
+Then check `<FOLDER>` before using it: it must be a relative path that stays
+inside the current directory. If it breaks any rule below, say which one and ask
+for a different name — don't edit it yourself — then check the new one the same
+way.
 
-Before creating anything, check whether `<FOLDER>/CLAUDE.md` exists.
+- It is `.`, or starts with `/` or `\` (an absolute path).
+- It contains a `..` segment.
+- It contains a control character or any of `< > : " | ? * [ ] { }`. These are
+  invalid in Windows paths or act as wildcards in the Step 1 glob. (A drive
+  letter such as `C:` is caught by the `:`.)
 
-**If it exists, stop immediately.** Create nothing, modify nothing. Tell the
-user:
+## Step 1 — Refuse to scaffold into existing content
 
-> A wiki already exists at `<FOLDER>/`. I won't overwrite it.
->
-> - Run `/wiki-status` inside that folder to see what's already there.
-> - Or re-run `/wiki-init` with a different folder name.
+Before creating anything, look at what is already at `<FOLDER>/`. Use `Glob` —
+hidden files count. Run these checks in order; the first one that applies ends
+the command:
 
-Then end the command. Do not proceed to Step 2 under any circumstances.
+1. Glob `<FOLDER>/CLAUDE.md`. **If it exists, stop immediately.** Create nothing,
+   modify nothing. Tell the user:
+
+   > A wiki already exists at `<FOLDER>/`. I won't overwrite it.
+   >
+   > - Run `/llm-wiki-init:wiki-status <FOLDER>` to see what's already there.
+   > - Or re-run `/llm-wiki-init:wiki-init` with a different folder name.
+
+2. Glob `<FOLDER>/**/*`. **If it returns any file at all, stop immediately.** The
+   folder is not empty, and scaffolding into it could clobber work that has
+   nothing to do with this command. Create nothing, modify nothing. Tell the
+   user:
+
+   > `<FOLDER>/` already exists and isn't empty, so I won't scaffold into it.
+   >
+   > - Re-run `/llm-wiki-init:wiki-init` with a different folder name, or
+   > - Empty `<FOLDER>/` first. (If it's left over from an interrupted run,
+   >   delete it and re-run.)
+
+If either check stops the command, end it there. Do not proceed to Step 2 under
+any circumstances.
 
 ## Step 2 — Create the directory structure
 
-Only once Step 1 has confirmed `<FOLDER>/CLAUDE.md` does **not** exist:
+Only once Step 1 has confirmed that `<FOLDER>/` does not exist or contains no
+files:
 
 ```text
 <FOLDER>/raw/
@@ -113,6 +139,12 @@ Pattern credit: Andrej Karpathy —
    session would read it as sourced fact. A gap is information; a fabrication is
    contamination.
 
+7. **Name pages and index entries consistently.** Page files are lowercase
+   kebab-case and uniquely named across the whole wiki (`page-name.md`), so
+   `[[page-name]]` always resolves to exactly one page. Each `wiki/index.md`
+   entry is one line under its category heading:
+   `- [[page-name]] — one-line summary`.
+
 ## Workflows
 
 ### Ingest — a new source arrives
@@ -123,14 +155,15 @@ Pattern credit: Andrej Karpathy —
 4. Create or update pages across `wiki/concepts/`, `wiki/entities/`, and
    `wiki/sources/`. A single source often touches several pages.
 5. Update `wiki/index.md` with every new page and its one-line summary.
-6. Append an entry to `wiki/log.md`.
+6. Append `## [YYYY-MM-DD] ingest | <source title>` to `wiki/log.md`.
 
 ### Query — a question arrives
 
 1. Read `wiki/index.md` first, to see what the wiki actually contains.
 2. Read the relevant pages it points to.
 3. Answer with citations to specific wiki pages and raw sources.
-4. If the answer was substantive, offer to file it back as a new wiki page.
+4. If the answer was substantive, append `## [YYYY-MM-DD] query | <question>` to
+   `wiki/log.md`, and offer to file the answer back as a new wiki page.
 5. If the wiki does not contain the answer, say so — see Rule 6.
 
 ### Lint — on request

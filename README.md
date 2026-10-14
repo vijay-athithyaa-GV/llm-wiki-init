@@ -112,8 +112,10 @@ any future Claude Code session opened here reads it and knows the rules — raw
 sources are immutable, every page gets indexed, contradictions get flagged rather
 than quietly overwritten, and gaps get reported instead of filled with guesses.
 
-Re-running `/llm-wiki-init:wiki-init` against a folder that already has a
-`CLAUDE.md` is refused. It will never overwrite an existing wiki.
+`/llm-wiki-init:wiki-init` only scaffolds into a folder that doesn't exist yet,
+or exists but is empty. If the folder already has anything in it — an existing
+wiki or anything else — it stops and changes nothing. The folder must be a
+relative path inside the current directory; absolute paths and `..` are rejected.
 
 ## Why a wiki instead of RAG
 

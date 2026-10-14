@@ -4,7 +4,7 @@ argument-hint: [wiki-folder]
 allowed-tools: Read, Glob, Grep
 ---
 
-# /wiki-status
+# /llm-wiki-init:wiki-status
 
 Report on an existing LLM Wiki. **This command is strictly read-only** — it does
 not create, edit, move, or delete a single file. If you find problems, report
@@ -23,7 +23,7 @@ If either is missing, stop and tell the user:
 > `wiki/index.md`.
 >
 > Run this from inside a wiki folder, pass the folder as an argument, or create a
-> new wiki with `/wiki-init <folder-name> "<topic>"`.
+> new wiki with `/llm-wiki-init:wiki-init <folder-name> "<topic>"`.
 
 ## Step 1 — Count pages per category
 
